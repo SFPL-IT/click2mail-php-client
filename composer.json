@@ -1,0 +1,29 @@
+{
+	"name": "sfpl/click2mail-php-client",
+    "type": "library",
+    "description": "PHP client for click2mail.",
+    "keywords": ["click2mail", "php"],
+    "homepage": "https://github.com/SFPL-IT/click2mail-php-client",
+    "support": {
+        "issues": "https://github.com/SFPL-IT/click2mail-php-client/issues",
+        "docs": "https://github.com/SFPL-IT/click2mail-php-client"
+    },
+    "license": "BSD-2-Clause",
+    "authors": [
+        {
+            "name": "Neal Wong",
+            "email": "neal.wkacc@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+    	"php": "^7.0"
+    },
+	"autoload": {
+        "psr-4": {
+            "Click2Mail\\": "src/"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
