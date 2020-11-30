@@ -122,9 +122,13 @@ class Click2MailAPIRest
 			if ($xml) {
 				$response = $xml;
 			} else {
+				$message = '[XMLParseFailure] ' . $output . '\n';
+				foreach (libxml_get_errors() as $error) {
+					$message .= $error->message . '\n';
+				}
 				$response = (object) [
 					'errno' => -1,
-					'message' => '[XMLParseFailure] ' . $output
+					'message' => $message
 				];
 			}
 		}
@@ -215,7 +219,9 @@ class Click2MailAPIRest
 
 		$url = $this->get_restUrl() . "/molpro/jobs/";
 		$output =$this->rest_Call2($url, $ar, "POST");
-		$this->jobId = (string) $output->id;
+		if (property_exists($output, 'id')) {
+			$this->jobId = (string) $output->id;
+		}
 
 		return $output;
 	}
@@ -356,9 +362,13 @@ class Click2MailAPIRest
 			if ($xml) {
 				$response = $xml;
 			} else {
+				$message = '[XMLParseFailure] ' . $output . '\n';
+				foreach (libxml_get_errors() as $error) {
+					$message .= $error->message . '\n';
+				}
 				$response = (object) [
 					'errno' => -1,
-					'message' => '[XMLParseFailure] ' . $output
+					'message' => $message
 				];
 			}
 		}
@@ -394,9 +404,13 @@ class Click2MailAPIRest
 			if ($xml) {
 				$response = $xml;
 			} else {
+				$message = '[XMLParseFailure] ' . $output . '\n';
+				foreach (libxml_get_errors() as $error) {
+					$message .= $error->message . '\n';
+				}
 				$response = (object) [
 					'errno' => -1,
-					'message' => '[XMLParseFailure] ' . $output
+					'message' => $message
 				];
 			}
 		}
@@ -435,9 +449,13 @@ class Click2MailAPIRest
 			if ($xml) {
 				$response = $xml;
 			} else {
+				$message = '[XMLParseFailure] ' . $output . '\n';
+				foreach (libxml_get_errors() as $error) {
+					$message .= $error->message . '\n';
+				}
 				$response = (object) [
 					'errno' => -1,
-					'message' => '[XMLParseFailure] ' . $output
+					'message' => $message
 				];
 			}
 		}
@@ -473,9 +491,13 @@ class Click2MailAPIRest
 			if ($xml) {
 				$response = $xml;
 			} else {
+				$message = '[XMLParseFailure] ' . $output . '\n';
+				foreach (libxml_get_errors() as $error) {
+					$message .= $error->message . '\n';
+				}
 				$response = (object) [
 					'errno' => -1,
-					'message' => '[XMLParseFailure] ' . $output
+					'message' => $message
 				];
 			}
 		}

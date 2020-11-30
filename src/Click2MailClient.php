@@ -30,7 +30,17 @@ class Click2MailClient {
 	}
 
  	public function send($addresses, $document, $returnAddress, $scheduledAt, $options = []) {
- 		$this->addAddresses($addresses);
+ 		$response = $this->addAddresses($addresses);
+ 		if (property_exists($response, 'errno') && $response->errno > 0) {
+ 			if (property_exists($response, 'message')) {
+ 				$message = $response->message;
+ 			} else {
+ 				$message = 'Create address list failure.';
+ 			}
+ 			$result = (object) ['status' => 10002, 'description' => $message];
+
+ 			return $result;
+ 		}
 
  		$formatedDocument = $this->getDocument($document);
  		if (!$formatedDocument) {
@@ -51,6 +61,16 @@ class Click2MailClient {
  				$response->status, $response->description
  			);
  			return (object) ['status' => 10001, 'description' => $message];
+ 		}
+ 		if (property_exists($response, 'errno') && $response->errno > 0) {
+ 			if (property_exists($response, 'message')) {
+ 				$message = $response->message;
+ 			} else {
+ 				$message = 'Create document failure.';
+ 			}
+ 			$result = (object) ['status' => 10003, 'description' => $message];
+
+ 			return $result;
  		}
 
  		if (!isset($options['return_address'])) {
@@ -149,6 +169,15 @@ class Click2MailClient {
  				'[CreateJobFailure] Status: %s, Message: %s',
  				$response->status, $response->description
  			);
+ 			throw new \Exception($message);
+ 		}
+ 		if (property_exists($response, 'errno')) {
+ 			if (property_exists($response, 'message')) {
+ 				$message = $response->message;
+ 			} else {
+ 				$message = 'Create job failure.';
+ 			}
+
  			throw new \Exception($message);
  		}
 
