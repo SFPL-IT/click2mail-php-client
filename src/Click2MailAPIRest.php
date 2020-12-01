@@ -358,7 +358,11 @@ class Click2MailAPIRest
 				'message' => curl_error($ch)
 			];
 		} else {
+			if (strpos($output, "{") !== FALSE) {
+				$output = $this->json2xml($output);
+			}
 			$xml = simplexml_load_string($output);
+
 			if ($xml) {
 				$response = $xml;
 			} else {
