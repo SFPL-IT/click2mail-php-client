@@ -183,17 +183,18 @@ class Click2MailAPIRest
 
 	public function job_create(
 		$documentClass, $layout, $productionTime, $envelope, $color,
-		$paperType, $printOption, $returnAddress = NULL) {
+		$paperType, $printOption, $returnAddress = NULL, $mailClass = 'First Class') {
 		$ar = array(
 			"documentClass" =>  $documentClass,
 			"layout" => $layout,
-			"productionTime"=> $productionTime,
-			"envelope"=> $envelope,
-			"color"=> $color,
-			"paperType"=> $paperType,
-			"printOption"=> $printOption,
-			"documentId"=>$this->documentId,
-			"addressId"=>$this->addressListId
+			"productionTime" => $productionTime,
+			"envelope" => $envelope,
+			"color" => $color,
+			"paperType" => $paperType,
+			"printOption" => $printOption,
+			"documentId" => $this->documentId,
+			"addressId" => $this->addressListId,
+			'mailClass' => $mailClass
 		);
 		if ($returnAddress) {
 			if (is_array($returnAddress)) {

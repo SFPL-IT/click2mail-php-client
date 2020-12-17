@@ -22,6 +22,12 @@ class Click2MailClient {
 	public const BLACK_WHITE = 'Black and White';
 	public const DUPLEX = 'Printing both sides';
 	public const SINGLE = 'Printing One side';
+	public const MAIL_CLASS = 'First Class';
+	public const MAIL_CLASSES = [
+		'First Class',
+		'Standard',
+		'Non Profit'
+	];
 
 	protected $api;
 
@@ -158,12 +164,17 @@ class Click2MailClient {
  		} else {
  			$printOption = self::SINGLE;
  		}
+ 		if (isset($options['mail_class']) && in_array($options['mail_class'], self::MAIL_CLASSES)) {
+ 			$mailClass = $options['mail_class'];
+ 		} else {
+ 			$mailClass = self::MAIL_CLASS;
+ 		}
  		$returnAddress = $options['return_address'] ?? NULL;
 
  		print('Creating JOB...');
  		$response = $this->api->job_create(
 			$documentClass, $layout, $productionTime, $envelope, $color,
-			$paperType, $printOption, $returnAddress);
+			$paperType, $printOption, $returnAddress, $mailClass);
  		if (property_exists($response, 'status') && $response->status > 0) {
  			$message = sprintf(
  				'[CreateJobFailure] Status: %s, Message: %s',
