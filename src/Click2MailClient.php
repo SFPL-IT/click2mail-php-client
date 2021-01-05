@@ -195,4 +195,8 @@ class Click2MailClient {
 		print('Submitting JOB...');
 		return $this->api->job_Submit();
  	}
+
+ 	public function __call($name, $arguments) {
+ 		return call_user_func_array([$this->api, $name], $arguments);
+ 	}
 }

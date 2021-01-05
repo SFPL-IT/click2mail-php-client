@@ -278,6 +278,55 @@ class Click2MailAPIRest
 		$this->addressListId = 0;
 		$this->documentId= 0;
 	}
+
+	public function getAddressListInfo($addressListId) {
+		$limit = 1000;
+		$query = http_build_query(
+			['baseAddressListId' => $addressListId, 'limit' => $limit]);
+		$url = $this->get_restUrl() . '/molpro/addressLists/info?' . $query;
+		$response = $this->sendRequest($url);
+
+		return json_decode(json_encode($response));
+	}
+
+	public function getAddressLists() {
+		$addressLists = [];
+		$numberOfLists = 250;
+		$offset = 0;
+		$query = http_build_query(['numberOfLists' => $numberOfLists, 'offset' => 0]);
+
+		while (TRUE) {
+			$url = $this->get_restUrl() . '/molpro/addressLists?' . $query;
+			$response = $this->sendRequest($url);
+
+			if (property_exists($response, 'errno') && $response->errno > 0) {
+				if (property_exists($response, 'message')) {
+					$message = $response->message;
+				} else {
+					$message = 'Retrieve Address Lists failure!';
+				}
+
+				break;
+			} else if (property_exists($response, 'status') && $response->status > 0) {
+				$message = json_encode($response);
+
+				break;
+			}
+
+			$response = json_decode(json_encode($response));
+			$addressLists = array_merge($addressLists, $response->lists->list);
+
+			$count = $response->count;
+			$offset = $numberOfLists * ($offset + 1);
+			if ($count <= $offset) {
+				break;
+			}
+
+			$query = http_build_query(['numberOfLists' => $numberOfLists, 'offset' => 0]);
+		}
+
+		return $addressLists;
+	}
 	
 	public function createAddressList() {
 		$this->addressListxml = new \SimpleXMLElement('<addressList/>');
